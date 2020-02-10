@@ -47,6 +47,7 @@
 
 // Conversions
 #include <tf2_eigen/tf2_eigen.h>
+#include <tf2/convert.h>
 
 // Transforms
 #include <tf2_ros/transform_listener.h>
@@ -456,7 +457,7 @@ bool MoveItVisualTools::publishAnimatedGrasp(const moveit_msgs::Grasp& grasp,
 #endif
 
   Eigen::Isometry3d grasp_pose_eigen;
-  tf2::fromMsg(grasp_pose, grasp_pose_eigen);
+  tf2::convert(grasp_pose, grasp_pose_eigen);
 
   // Pre-grasp pose variables
   geometry_msgs::Pose pre_grasp_pose;
@@ -509,7 +510,7 @@ bool MoveItVisualTools::publishAnimatedGrasp(const moveit_msgs::Grasp& grasp,
     pre_grasp_pose_eigen.translation() += pre_grasp_approach_direction_local;
 
     // Convert eigen pre-grasp position back to regular message
-    pre_grasp_pose = tf2::toMsg(pre_grasp_pose_eigen);
+    tf2::convert(pre_grasp_pose_eigen, pre_grasp_pose);
 
     // publishArrow(pre_grasp_pose, moveit_visual_tools::BLUE);
     publishEEMarkers(pre_grasp_pose, ee_jmg);
@@ -687,7 +688,8 @@ bool MoveItVisualTools::publishCollisionCuboid(const geometry_msgs::Point& point
 bool MoveItVisualTools::publishCollisionCuboid(const Eigen::Isometry3d& pose, double width, double depth, double height,
                                                const std::string& name, const rviz_visual_tools::colors& color)
 {
-  geometry_msgs::Pose pose_msg = tf2::toMsg(pose);
+  geometry_msgs::Pose pose_msg;
+  tf2::convert(pose, pose_msg);
   return publishCollisionCuboid(pose_msg, width, depth, height, name, color);
 }
 

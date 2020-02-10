@@ -8,6 +8,7 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   rviz_visual_tools
   tf2_eigen
+  tf2
   geometry_msgs
   moveit_ros_planning
   moveit_core
